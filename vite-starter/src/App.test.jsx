@@ -1,6 +1,7 @@
 import { render, screen, fireEvent } from '@testing-library/react';
 import App from './App';
 import { expect } from 'vitest';
+import kebabCaseToTitleCase from './helper';
 
 test('button click flow', () => {
   // render component
@@ -8,7 +9,7 @@ test('button click flow', () => {
   // checks if the button exists and if its text contains 'blue' text.
   const buttonElement = screen.getByRole('button', { name: /blue/i });
   // checks if the button has class name of 'red'
-  expect(buttonElement).toHaveClass('red');
+  expect(buttonElement).toHaveClass('medium-violet-red');
 
   // click the button
   fireEvent.click(buttonElement);
@@ -16,7 +17,7 @@ test('button click flow', () => {
   // check the button text
   expect(buttonElement).toHaveTextContent(/red/i);
 
-  expect(buttonElement).toHaveClass('blue');
+  expect(buttonElement).toHaveClass('midnight-blue');
 });
 
 test('checkbox flow', () => {
@@ -42,7 +43,7 @@ test('checkbox flow', () => {
 
   // check enabled state
   expect(buttonElement).toBeEnabled();
-  expect(buttonElement).toHaveStyle({ 'background-color': 'rgb(255, 0, 0)' });
+  expect(buttonElement).toHaveStyle({ 'background-color': 'rgb(199, 21, 133)' });
 });
 
 test('checkbox flow after button click', () => {
@@ -65,5 +66,18 @@ test('checkbox flow after button click', () => {
 
   // check enabled state
   expect(buttonElement).toBeEnabled();
-  expect(buttonElement).toHaveStyle({ 'background-color': 'rgb(0, 0, 255)' });
+  expect(buttonElement).toHaveStyle({ 'background-color': 'rgb(25, 25, 112)' });
+});
+
+// unit test for kebabCaseToTitleCase helper function
+describe('kebabCaseToTitleCase', () => {
+  test('works for no hyphens', () => {
+    expect(kebabCaseToTitleCase('red')).toBe('Red');
+  });
+  test('works for one hyphen', () => {
+    expect(kebabCaseToTitleCase('midnight-blue')).toBe('Midnight Blue');
+  });
+  test('works for multiple hyphens', () => {
+    expect(kebabCaseToTitleCase('medium-violet-red')).toBe('Medium Violet Red');
+  });
 });
