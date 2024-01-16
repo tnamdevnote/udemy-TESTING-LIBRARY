@@ -1,7 +1,12 @@
+import { useState } from 'react';
+import './App.css';
 function App() {
+  const [btnColor, setBtnColor] = useState('red');
+  const nextColor = btnColor === 'red' ? 'blue' : 'red';
+
   return (
     <div>
-      <h1>I'm gonna learn React Testing Library</h1>
+      <button className={btnColor} onClick={() => setBtnColor(nextColor)}>{`Change to ${nextColor}`}</button>
     </div>
   );
 }
