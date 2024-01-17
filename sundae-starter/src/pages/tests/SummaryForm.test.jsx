@@ -5,8 +5,8 @@ import { expect } from 'vitest';
 test('Initial button state', () => {
   render(<SummaryForm />);
 
-  const checkboxElement = screen.getByRole('checkbox', { name: 'Terms and Conditions' });
-  const confirmButtonElement = screen.getByRole('button', { name: 'Confirm Order' });
+  const checkboxElement = screen.getByRole('checkbox', { name: 'I agree to Terms and Conditions' });
+  const confirmButtonElement = screen.getByRole('button', { name: 'Confirm order' });
 
   // initial state
   expect(confirmButtonElement).toBeDisabled();
@@ -16,8 +16,8 @@ test('Initial button state', () => {
 test('Checkbox enables button first click and disables on second click', () => {
   render(<SummaryForm />);
 
-  const checkboxElement = screen.getByRole('checkbox', { name: 'Terms and Conditions' });
-  const confirmButtonElement = screen.getByRole('button', { name: 'Confirm Order' });
+  const checkboxElement = screen.getByRole('checkbox', { name: 'I agree to Terms and Conditions' });
+  const confirmButtonElement = screen.getByRole('button', { name: 'Confirm order' });
 
   // check the box
   fireEvent.click(checkboxElement);
