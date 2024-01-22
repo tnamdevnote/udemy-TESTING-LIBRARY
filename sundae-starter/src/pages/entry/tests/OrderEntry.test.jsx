@@ -1,7 +1,8 @@
 import { http, HttpResponse } from 'msw';
 import { server } from '../../../mocks/server';
 
-import { render, screen, logRoles } from '@testing-library/react';
+// import { render, screen, logRoles } from '@testing-library/react';
+import { render, screen } from '../../../test-utils/testing-librar-utils';
 import OrderEntry from '../OrderEntry';
 import { expect } from 'vitest';
 
@@ -18,6 +19,5 @@ test('handles error for scoops and toppings routes', async () => {
   const { container } = render(<OrderEntry />);
 
   const alerts = await screen.findAllByText('An unexpected error occurred. Please try again later.');
-  logRoles(container);
   expect(alerts).toHaveLength(2);
 });
