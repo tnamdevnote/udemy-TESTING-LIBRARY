@@ -1,4 +1,4 @@
-import { render, screen } from '../../../test-utils/testing-librar-utils';
+import { render, screen } from '../../../test-utils/testing-library-utils';
 import userEvent from '@testing-library/user-event';
 import Options from '../Options';
 
