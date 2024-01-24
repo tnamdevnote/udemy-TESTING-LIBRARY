@@ -31,7 +31,7 @@ export default function SummaryForm({ setOrderPhase }) {
   );
 
   return (
-    <Form>
+    <Form onSubmit={handleSubmit}>
       <Form.Group controlId="terms-and-conditions">
         <Form.Check
           type="checkbox"

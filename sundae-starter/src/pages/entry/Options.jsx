@@ -14,11 +14,16 @@ export default function Options({ optionType }) {
   const { totals } = useOrderDetailsContext();
 
   // optionType is 'scoops' or 'toppings
+  const controller = new AbortController();
   useEffect(() => {
     axios
       .get(`http://localhost:3030/${optionType}`)
       .then((response) => setItems(response.data))
       .catch((error) => setError(true));
+
+    return () => {
+      controller.abort();
+    };
   }, [optionType]);
 
   if (error) {
