@@ -17,7 +17,8 @@ export default function ScoopOptions({ name, imagePath }) {
 
     setIsValid(valueIsValid);
 
-    updateItemCount(name, parseInt(currentValue), 'scoops');
+    const newValue = valueIsValid ? parseInt(currentValue) : 0;
+    updateItemCount(name, newValue, 'scoops');
   };
   return (
     <Col xs={12} sm={6} md={4} lg={3} style={{ textAlign: 'center' }}>
