@@ -2,6 +2,7 @@ import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 
 import App from '../App';
+import { expect } from 'vitest';
 
 test('order phases for happy path', async () => {
   const user = userEvent.setup();
@@ -69,4 +70,60 @@ test('order phases for happy path', async () => {
   // "not wrapped in act()" error
   // This is a good practice
   unmount();
+});
+
+test('Toppings header is not on summary page if no toppings ordered', async () => {
+  const user = userEvent.setup();
+  render(<App />);
+
+  const grandTotal = screen.getByRole('heading', { name: /Grand total: \$/i });
+  expect(grandTotal).toHaveTextContent('0.00');
+
+  const scoopInput = await screen.findByRole('spinbutton', { name: 'Vanilla' });
+  await user.clear(scoopInput);
+  await user.type(scoopInput, '2');
+  expect(grandTotal).toHaveTextContent('4.00');
+
+  const orderButton = screen.getByRole('button', { name: 'Order Sundae!' });
+  await user.click(orderButton);
+
+  const scoopsHeading = screen.getByRole('heading', { name: /Scoops: \$/i });
+  expect(scoopsHeading).toBeInTheDocument();
+
+  const toppingsHeading = screen.queryByRole('heading', { name: /Toppings: \$/i });
+  expect(toppingsHeading).not.toBeInTheDocument();
+});
+
+test('Toppings header is not on summary page when toppings were removed', async () => {
+  const user = userEvent.setup();
+  render(<App />);
+
+  const grandTotal = screen.getByRole('heading', { name: /Grand total: \$/i });
+  expect(grandTotal).toHaveTextContent('0.00');
+
+  const scoopInput = await screen.findByRole('spinbutton', { name: 'Vanilla' });
+  await user.clear(scoopInput);
+  await user.type(scoopInput, '2');
+  expect(grandTotal).toHaveTextContent('4.00');
+
+  const toppingsCheckbox = await screen.findByRole('checkbox', { name: 'Hot fudge' });
+  await user.click(toppingsCheckbox);
+  expect(toppingsCheckbox).toBeChecked();
+  const toppingsSubtotal = screen.getByText('Toppings total: $', { exact: false });
+  expect(toppingsSubtotal).toHaveTextContent('1.50');
+
+  // remove the topping
+  await user.click(toppingsCheckbox);
+  expect(toppingsCheckbox).not.toBeChecked();
+  expect(toppingsSubtotal).toHaveTextContent('0.00');
+
+  // find and click order summary button
+  const orderButton = screen.getByRole('button', { name: 'Order Sundae!' });
+  await user.click(orderButton);
+
+  const scoopsHeading = screen.getByRole('heading', { name: /Scoops: \$/i });
+  expect(scoopsHeading).toBeInTheDocument();
+
+  const toppingsHeading = screen.queryByRole('heading', { name: /Toppings: \$/i });
+  expect(toppingsHeading).not.toBeInTheDocument();
 });
